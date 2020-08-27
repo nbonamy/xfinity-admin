@@ -1,0 +1,4 @@
+*.log
+*.png
+.vscode
+config.json

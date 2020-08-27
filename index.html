@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Xfinity Admin UI</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="css/bulma.min.css" />
+  <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+  <p class="title is-3">Xfinity Admin</p>
+  <div id="loading" class="loading is-hidden">Getting status<span class="one">.</span><span class="two">.</span><span class="three">.</span></div>
+  <div id="running" class="loading is-hidden">Running command<span class="one">.</span><span class="two">.</span><span class="three">.</span></div>
+  <div class="section">
+    <p class="title is-4">Block services</p>
+    <a id="status" class="button is-info has-text-weight-bold" href="xfinity-admin.py?action=status">Get Status</a>
+    <a id="unblock" class="button is-success has-text-weight-bold" href="xfinity-admin.py?action=unblock">Unblock</a>
+    <a id="block" class="button is-danger has-text-weight-bold" href="xfinity-admin.py?action=block">Block</a>
+  </div>
+  <!--div class="section">
+      <p class="title is-4">Administration</p>
+      <a class="button is-danger has-text-weight-bold" href="xfinity-admin.py?action=reboot">Reboot</a>
+  </div-->
+  <script src="js/jquery-3.4.1.slim.min.js"></script>
+  <script>
+    $(document).ready(function() {
+
+      // link clicks
+      $('a').click(function() {
+        let self = $(this);
+        $('body').addClass('processing');
+        $('#running').removeClass('is-hidden');
+        setTimeout(function() {
+            window.location = self.attr('href');
+        }, 100)
+        return false;
+      });
+
+      // get url parameters
+      let url = new URL(window.location);
+
+      // get status initially
+      let action = url.searchParams.get('action');
+      if (action === 'getstatus') {
+        $('body').addClass('processing');
+        $('#loading').removeClass('is-hidden');
+        window.location = 'xfinity-admin.py?action=status';
+        return;
+      }
+
+      // blocking status
+      let blockStatus = url.searchParams.get('status');
+      if (blockStatus !== null) {
+        $('#'+blockStatus).attr('disabled', true);
+      }
+
+    });
+  </script>
+</body>
+</html>
