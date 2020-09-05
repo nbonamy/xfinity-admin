@@ -10,7 +10,7 @@ from urllib.parse import urlparse, parse_qs
 # some constants
 CONFIG_FILE = 'config.json'
 ACTION_REBOOT = 'reboot'
-ACTION_BLOCK = 'block'
+ACTION_SCHEDULE = 'schedule'
 ACTION_UNBLOCK = 'unblock'
 ACTION_STATUS = 'status'
 
@@ -115,7 +115,7 @@ class XfinityAdmin(object):
 
             # block/unblock
             logger.debug("here")
-            if self.action == ACTION_BLOCK or self.action == ACTION_UNBLOCK:
+            if self.action == ACTION_SCHEDULE or self.action == ACTION_UNBLOCK:
                 rc = self.block_services(self.action)
 
             # done
@@ -179,7 +179,7 @@ class XfinityAdmin(object):
         self.get_block_page()
         block = self.browser.find_element_by_css_selector('.radioswitch_on')
         unblock = self.browser.find_element_by_css_selector('.radioswitch_off')
-        if action == ACTION_BLOCK:
+        if action == ACTION_SCHEDULE:
             block.click()
             self.do_screenshot()
             return action
@@ -193,7 +193,7 @@ class XfinityAdmin(object):
         self.get_block_page()
         block = self.browser.find_element_by_css_selector('.radioswitch_on')
         if 'rs_selected' in block.get_attribute('class').split():
-            return ACTION_BLOCK
+            return ACTION_SCHEDULE
         return ACTION_UNBLOCK
 
     def do_screenshot(self):
@@ -336,7 +336,7 @@ class XfinityAdmin(object):
 
 def parse_args(argv, isCgi):
     browsers = ['phantomjs', 'firefox', 'chrome', 'chrome-headless']
-    actions = [ACTION_REBOOT, ACTION_BLOCK, ACTION_UNBLOCK, ACTION_STATUS]
+    actions = [ACTION_REBOOT, ACTION_SCHEDULE, ACTION_UNBLOCK, ACTION_STATUS]
     p = argparse.ArgumentParser(description='Xfinity admin', prog='xfinity-admin')
     p.add_argument('-v', '--verbose', dest='verbose', action='count', default=0, help='verbose output. specify twice for debug-level output.')
     p.add_argument('-b', '--browser', dest='browser_name', type=str, default='chrome-headless', choices=browsers, help='Browser name/type to use')

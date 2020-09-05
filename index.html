@@ -13,9 +13,13 @@
   <div id="running" class="loading is-hidden">Running command<span class="one">.</span><span class="two">.</span><span class="three">.</span></div>
   <div class="section">
     <p class="title is-4">Block services</p>
-    <a id="status" class="button is-info has-text-weight-bold" href="xfinity-admin.py?action=status">Get Status</a>
-    <a id="unblock" class="button is-success has-text-weight-bold" href="xfinity-admin.py?action=unblock">Unblock</a>
-    <a id="block" class="button is-danger has-text-weight-bold" href="xfinity-admin.py?action=block">Block</a>
+    <a id="status" class="button action is-info has-text-weight-bold" href="xfinity-admin.py?action=status">Get Status</a>
+    <a id="unblock" class="button action is-success has-text-weight-bold" href="xfinity-admin.py?action=unblock">Unblock</a>
+    <a id="schedule" class="button action is-warning has-text-weight-bold" href="xfinity-admin.py?action=schedule">Per Schedule</a>
+    <a id="block" class="button is-normal has-text-weight-bold" href="#">Block</a>
+  </div>
+  <div class="section">
+    <a href="http://xfinity.com/myxfi" target="_blank">http://xfinity.com/myxfi</a>
   </div>
   <!--div class="section">
       <p class="title is-4">Administration</p>
@@ -26,7 +30,7 @@
     $(document).ready(function() {
 
       // link clicks
-      $('a').click(function() {
+      $('a.action').click(function() {
         let self = $(this);
         $('body').addClass('processing');
         $('#running').removeClass('is-hidden');
