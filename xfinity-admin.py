@@ -48,7 +48,7 @@ try:
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support import expected_conditions as EC
 except ImportError:
-    sys.stderr.write("Error importing selenium - 'pip install selenium'\n")
+    sys.stderr.write("Error importing selenium - 'sudo pip3 install selenium'\n")
     raise SystemExit(1)
 
 FORMAT = "[%(asctime)s %(levelname)s] %(message)s"
@@ -146,15 +146,15 @@ class XfinityAdmin(object):
 
         # login
         self.get_start_page()
-        self.browser.find_element_by_id("username").send_keys(self.username)
-        self.browser.find_element_by_id("password").send_keys(self.password)
+        self.browser.find_element(By.ID, "username").send_keys(self.username)
+        self.browser.find_element(By.ID, "password").send_keys(self.password)
         self.do_screenshot()
-        self.browser.find_element_by_xpath("//input[@type='submit']").click()
+        self.browser.find_element(By.XPATH, "//input[@type='submit']").click()
         self.wait_for_page_load()
         self.do_screenshot()
 
         # check we are on home
-        if self.browser.find_element_by_link_text("Logout"):
+        if self.browser.find_element(By.LINK_TEXT, "Logout"):
             logger.debug("Success")
             return True
 
@@ -169,16 +169,16 @@ class XfinityAdmin(object):
 
         # do it
         logger.debug('Clicking reboot button')
-        self.browser.find_element_by_id('btn1').click()
+        self.browser.find_element(By.ID, 'btn1').click()
         time.sleep(1)
         logger.debug('Confirming reboot')
-        self.browser.find_element_by_id('popup_ok').click()
+        self.browser.find_element(By.ID, 'popup_ok').click()
         self.wait_for_page_load()
 
     def block_services(self, action):
         self.get_block_page()
-        block = self.browser.find_element_by_css_selector('.radioswitch_on')
-        unblock = self.browser.find_element_by_css_selector('.radioswitch_off')
+        block = self.browser.find_element(By.CSS_SELECTOR, '.radioswitch_on')
+        unblock = self.browser.find_element(By.CSS_SELECTOR, '.radioswitch_off')
         if action == ACTION_SCHEDULE:
             block.click()
             self.do_screenshot()
@@ -191,7 +191,7 @@ class XfinityAdmin(object):
 
     def get_block_status(self):
         self.get_block_page()
-        block = self.browser.find_element_by_css_selector('.radioswitch_on')
+        block = self.browser.find_element(By.CSS_SELECTOR, '.radioswitch_on')
         if 'rs_selected' in block.get_attribute('class').split():
             return ACTION_SCHEDULE
         return ACTION_UNBLOCK
@@ -403,9 +403,9 @@ def main():
     # cgi requires header
     if isCgi:
         if not res:
-            print('Status: 500 Server Error')
+            print('HTTP/1.0 500 Server Error')
         else:
-            print('Status: 302 Found')
+            print('HTTP/1.0 302 Found')
         if type(res) is str:
             print('Location: index.html?status={}'.format(res))
         else:
